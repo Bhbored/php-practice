@@ -1,0 +1,75 @@
+<?php
+
+include "connection.php";
+
+if (mysqli_connect_errno()) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>List Of Students from DB</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $result = mysqli_query($conn, "SELECT * FROM students");
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>
+                    <td>{$row['name']}</td>
+                    <td>{$row['course']}</td>
+                    <td>{$row['email']}</td>
+                    <td>
+                        <button class='btn btn-warning' onclick='editStudent({$row['id']})'>Edit</button>
+                        <button class='btn btn-danger' onclick='deleteStudent({$row['id']})'>Delete</button>
+                    </td>
+                </tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
+        <h1>Add new Student</h1>
+        <form>
+            <input type="hidden" id="studentId" value="0">
+            <div class="mb-2 d-flex align-items-center">
+                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Name:</label>
+                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="name">
+            </div>
+            <div class="mb-2 d-flex align-items-center">
+                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Course:</label>
+                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="course">
+            </div>
+            <div class="mb-2 d-flex align-items-center">
+                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Email:</label>
+                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="email">
+            </div>
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" onclick="saveStudent()">Add Student</button>
+            </div>
+        </form>
+
+    </div>
+    <script src="./bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
