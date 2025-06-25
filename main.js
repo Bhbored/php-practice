@@ -23,6 +23,21 @@ function saveStudent() {
         });
 }
 
+// Edit student: populate the form with student data
+function editStudent(id) {
+    fetch('get_student.php?id=' + id)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('studentId').value = data.id;
+            document.querySelector('[name="name"]').value = data.name;
+            document.querySelector('[name="course"]').value = data.course;
+            document.querySelector('[name="email"]').value = data.email;
+        })
+        .catch(error => {
+            alert('Failed to fetch student data');
+        });
+}
+
 // Delete employee
 function deleteStudent(id) {
     if (confirm('Are you sure you want to delete this student?')) {
