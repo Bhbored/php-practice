@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
     <div class="container mt-5">
         <h1>List Of Students from DB</h1>
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="studentsTable">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -48,7 +48,7 @@ if (mysqli_connect_errno()) {
             </table>
         </div>
         <h1>Add new Student</h1>
-        <form>
+        <form id="studentForm">
             <input type="hidden" id="studentId" value="0">
             <div class="mb-2 d-flex align-items-center">
                 <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Name:</label>
@@ -68,7 +68,6 @@ if (mysqli_connect_errno()) {
         </form>
 
     </div>
-    <script src="./bootstrap/js/bootstrap.bundle.js"></script>
     <script src="main.js"></script>
 </body>
 

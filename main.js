@@ -5,34 +5,35 @@ function saveStudent() {
     const course = document.getElementById('course').value;
     const email = document.getElementById('email').value;
 
-    // Simple validation
     if (!name || !course || !email) {
         alert('Please fill all fields');
         return;
     }
 
-    // Create FormData object
-    const formData = new FormData();
-    formData.append('id', id);//the first field is the id from the database
-    formData.append('name', name);
-    formData.append('course', course);
-    formData.append('email', email);
+    // Send as JSON instead of FormData
+    const data = {
+        id: id,
+        name: name,
+        course: course,
+        email: email
+    };
 
-    // Determine the URL based on add or update
-    const url = id === '0' ? 'add_student.php' : 'update_student.php';
-
-    // Send data to server
-    fetch(url, {
+    // Single endpoint handling both operations
+    fetch('save_student.php', {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
     })
         .then(response => response.text())
         .then(data => {
             alert(data);
-            location.reload(); // Refresh the page to see changes
+            location.reload();
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('Operation failed');
         });
 }
 function editStudent(id) {
