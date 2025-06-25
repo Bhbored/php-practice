@@ -19,6 +19,7 @@ if (mysqli_connect_errno()) {
 
 <body>
     <div class="container mt-5">
+        <div id="message"></div>
         <h1>List Of Students from DB</h1>
         <div class="table-responsive">
             <table class="table table-bordered" id="studentsTable">
@@ -27,6 +28,7 @@ if (mysqli_connect_errno()) {
                         <th>Name</th>
                         <th>Course</th>
                         <th>Email</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,10 +68,10 @@ if (mysqli_connect_errno()) {
                 <input type="email" class="form-control form-control-sm" style="width:200px" name="email" required>
             </div>
 
-            <button type="button" class="btn btn-primary" onclick="saveStudent()">Save Student</button>
+            <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveStudent()">Save Student</button>
         </form>
     </div>
-    <script src="main.js"></script>
+    <script src="main.js?v=<?=time()?>"></script>
 </body>
 
 </html>
