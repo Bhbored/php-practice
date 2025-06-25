@@ -1,26 +1,23 @@
 <?php
 include "connection.php";
 
-// Get JSON input
-$json = file_get_contents('php://input');
-$data = json_decode($json, true);
+$id = $_POST['id'] ?? 0;
+$name = mysqli_real_escape_string($conn, $_POST['name']);
+$course = mysqli_real_escape_string($conn, $_POST['course']);
+$email = mysqli_real_escape_string($conn, $_POST['email']);
 
-// Sanitize inputs
-$id = mysqli_real_escape_string($conn, $data['id'] ?? 0);
-$name = mysqli_real_escape_string($conn, $data['name']);
-$course = mysqli_real_escape_string($conn, $data['course']);
-$email = mysqli_real_escape_string($conn, $data['email']);
-
-// Determine if insert or update
 if ($id == 0) {
+    // Insert new
     $sql = "INSERT INTO students (name, course, email) VALUES ('$name', '$course', '$email')";
+    $success = "added";
 } else {
+    // Update existing
     $sql = "UPDATE students SET name='$name', course='$course', email='$email' WHERE id=$id";
+    $success = "updated";
 }
 
-// Execute query
 if (mysqli_query($conn, $sql)) {
-    echo $id == 0 ? "Student added successfully" : "Student updated successfully";
+    echo "Student $success successfully!";
 } else {
     echo "Error: " . mysqli_error($conn);
 }

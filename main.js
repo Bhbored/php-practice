@@ -1,40 +1,17 @@
 // Save employee (add or update)
 function saveStudent() {
-    const id = document.getElementById('studentId').value;
-    const name = document.getElementById('name').value;
-    const course = document.getElementById('course').value;
-    const email = document.getElementById('email').value;
+    const formData = new FormData(document.getElementById('studentForm'));
 
-    if (!name || !course || !email) {
-        alert('Please fill all fields');
-        return;
-    }
-
-    // Send as JSON instead of FormData
-    const data = {
-        id: id,
-        name: name,
-        course: course,
-        email: email
-    };
-
-    // Single endpoint handling both operations
     fetch('save_student.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
+        body: formData
     })
         .then(response => response.text())
         .then(data => {
             alert(data);
-            location.reload();
+            if (data.includes("success")) location.reload();
         })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Operation failed');
-        });
+        .catch(error => alert("Error: " + error));
 }
 function editStudent(id) {
     fetch('get_student.php?id=' + id)
