@@ -1,93 +1,68 @@
-// Save employee (add or update)
-function showMessage(msg, isSuccess = true) {
-    const messageDiv = document.getElementById('message');//remember to add this div in your HTML
-    messageDiv.innerHTML = `<div class='alert alert-${isSuccess ? 'success' : 'danger'}'>${msg}</div>`;
-    setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
+// Show a message using alert
+function showMessage(msg) {
+    alert(msg);
 }
 
+// Clear the form and reset to add mode
 function resetForm() {
-    document.getElementById('studentForm').reset();
-    document.getElementById('id').value = 0;
-    document.getElementById('saveBtn').textContent = 'Save Student';
+    $('#studentForm')[0].reset();
+    $('#id').val(0);
+    $('#saveBtn').text('Save Student');
 }
 
+// Reload the page to update the table
 function refreshTable() {
-    console.log('refreshTable called');
-    fetch(window.location.href)
-        .then(res => res.text())
-        .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const newTbody = doc.querySelector('#studentsTable tbody');
-            document.querySelector('#studentsTable tbody').innerHTML = newTbody.innerHTML;
-        })
-        .catch(err => {
-            showMessage('Failed to refresh table: ' + err, false);
-            location.reload(); // fallback
-        });
+    location.reload();
 }
 
+// Save or update a student
 function saveStudent() {
-    console.log('saveStudent called');
-    const form = document.getElementById('studentForm');
-    const formData = new FormData(form);
-    document.getElementById('saveBtn').disabled = true;
-    fetch('save_student.php', {
-        method: 'POST',
-        body: formData
-    })
-        .then(response => response.json())
-        .then(data => {
-            showMessage(data.message, data.success);
-            if (data.success) {
-                resetForm();
-                refreshTable();
-            }
-        })
-        .catch(error => {
-            showMessage('Operation failed: ' + error.message, false);
-        })
-        .finally(() => {
-            document.getElementById('saveBtn').disabled = false;
-        });
+    var id = $('#id').val();
+    var name = $('[name="name"]').val();
+    var course = $('[name="course"]').val();
+    var email = $('[name="email"]').val();
+
+    $.post('save_student.php', {
+        id: id,
+        name: name,
+        course: course,
+        email: email
+    }, function (data) {
+        var result = typeof data === 'object' ? data : JSON.parse(data);
+        showMessage(result.message);
+        if (result.success) {
+            resetForm();
+            refreshTable();
+        }
+    });
 }
 
-// Edit student: populate the form with student data
+// Edit student: fill the form with student data
 function editStudent(id) {
-    console.log('editStudent called with id', id);
-    fetch('get_student.php?id=' + id)
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('id').value = data.student.id;
-                document.querySelector('[name="name"]').value = data.student.name;
-                document.querySelector('[name="course"]').value = data.student.course;
-                document.querySelector('[name="email"]').value = data.student.email;
-                document.getElementById('saveBtn').textContent = 'Update Student';
-            } else {
-                showMessage(data.message, false);
-            }
-        })
-        .catch(error => {
-            showMessage('Failed to fetch student data', false);
-        });
+    $.get('get_student.php', { id: id }, function (data) {
+        var result = typeof data === 'object' ? data : JSON.parse(data);
+        if (result.success) {
+            $('#id').val(result.student.id);
+            $('[name="name"]').val(result.student.name);
+            $('[name="course"]').val(result.student.course);
+            $('[name="email"]').val(result.student.email);
+            $('#saveBtn').text('Update Student');
+        } else {
+            showMessage(result.message);
+        }
+    });
 }
 
-// Delete employee
+// Delete a student
 function deleteStudent(id) {
-    console.log('deleteStudent called with id', id);
     if (confirm('Are you sure you want to delete this student?')) {
-        fetch('delete_student.php?id=' + id)
-            .then(response => response.json())
-            .then(data => {
-                showMessage(data.message, data.success);
-                if (data.success) {
-                    refreshTable();
-                    resetForm();
-                }
-            })
-            .catch(() => {
-                showMessage('Failed to delete student', false);
-            });
+        $.get('delete_student.php', { id: id }, function (data) {
+            var result = typeof data === 'object' ? data : JSON.parse(data);
+            showMessage(result.message);
+            if (result.success) {
+                refreshTable();
+                resetForm();
+            }
+        });
     }
 }
