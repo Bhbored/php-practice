@@ -28,7 +28,7 @@ function editStudent(id) {
     fetch('get_student.php?id=' + id)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('studentId').value = data.id;
+            document.getElementById('id').value = data.id;
             document.querySelector('[name="name"]').value = data.name;
             document.querySelector('[name="course"]').value = data.course;
             document.querySelector('[name="email"]').value = data.email;

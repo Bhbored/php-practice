@@ -49,7 +49,7 @@ if (mysqli_connect_errno()) {
         </div>
         <h1>Add new Student</h1>
         <form id="studentForm">
-            <input type="hidden" name="id" id="studentId" value="0">
+            <input type="hidden" name="id" id="id" value="0">
 
             <div class="mb-2 d-flex align-items-center">
                 <label class="form-label mb-0 me-1" style="width:70px">Name:</label>
