@@ -1,26 +1,25 @@
 // Save employee (add or update)
 function saveStudent() {
-    const formData = new FormData(document.getElementById('studentForm'));
+    const form = document.getElementById('studentForm');
+    const formData = new FormData(form);
 
     fetch('save_student.php', {
         method: 'POST',
         body: formData
     })
-        .then(response => response.text())
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.text();
+        })
         .then(data => {
             alert(data);
-            if (data.includes("success")) location.reload();
+            if (data.includes("success")) {
+                location.reload(); // Refresh to show changes
+            }
         })
-        .catch(error => alert("Error: " + error));
-}
-function editStudent(id) {
-    fetch('get_student.php?id=' + id)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('studentId').value = data.id;
-            document.getElementById('name').value = data.name;
-            document.getElementById('course').value = data.course;
-            document.getElementById('email').value = data.email;
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Operation failed: ' + error.message);
         });
 }
 

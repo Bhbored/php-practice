@@ -49,24 +49,25 @@ if (mysqli_connect_errno()) {
         </div>
         <h1>Add new Student</h1>
         <form id="studentForm">
-            <input type="hidden" id="studentId" value="0">
-            <div class="mb-2 d-flex align-items-center">
-                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Name:</label>
-                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="name">
-            </div>
-            <div class="mb-2 d-flex align-items-center">
-                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Course:</label>
-                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="course">
-            </div>
-            <div class="mb-2 d-flex align-items-center">
-                <label for="horizontalName" class="form-label mb-0 me-1" style="width: 70px" ; required>Email:</label>
-                <input type=" text" class="form-control form-control-sm" style="width: 200px;" id="email">
-            </div>
-            <div class="col-12">
-                <button type="button" class="btn btn-primary" onclick="saveStudent()">Add Student</button>
-            </div>
-        </form>
+            <input type="hidden" name="id" id="studentId" value="0">
 
+            <div class="mb-2 d-flex align-items-center">
+                <label class="form-label mb-0 me-1" style="width:70px">Name:</label>
+                <input type="text" class="form-control form-control-sm" style="width:200px" name="name" required>
+            </div>
+
+            <div class="mb-2 d-flex align-items-center">
+                <label class="form-label mb-0 me-1" style="width:70px">Course:</label>
+                <input type="text" class="form-control form-control-sm" style="width:200px" name="course" required>
+            </div>
+
+            <div class="mb-2 d-flex align-items-center">
+                <label class="form-label mb-0 me-1" style="width:70px">Email:</label>
+                <input type="email" class="form-control form-control-sm" style="width:200px" name="email" required>
+            </div>
+
+            <button type="button" class="btn btn-primary" onclick="saveStudent()">Save Student</button>
+        </form>
     </div>
     <script src="main.js"></script>
 </body>

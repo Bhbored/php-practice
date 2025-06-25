@@ -1,25 +1,31 @@
 <?php
 include "connection.php";
 
+// Get all form data
 $id = $_POST['id'] ?? 0;
-$name = mysqli_real_escape_string($conn, $_POST['name']);
-$course = mysqli_real_escape_string($conn, $_POST['course']);
-$email = mysqli_real_escape_string($conn, $_POST['email']);
+$name = $conn->real_escape_string($_POST['name'] ?? '');
+$course = $conn->real_escape_string($_POST['course'] ?? '');
+$email = $conn->real_escape_string($_POST['email'] ?? '');
 
+// Validate inputs
+if (empty($name) || empty($course) || empty($email)) {
+    die("Error: All fields are required");
+}
+
+// Determine if insert or update
 if ($id == 0) {
-    // Insert new
     $sql = "INSERT INTO students (name, course, email) VALUES ('$name', '$course', '$email')";
-    $success = "added";
+    $message = "added";
 } else {
-    // Update existing
     $sql = "UPDATE students SET name='$name', course='$course', email='$email' WHERE id=$id";
-    $success = "updated";
+    $message = "updated";
 }
 
-if (mysqli_query($conn, $sql)) {
-    echo "Student $success successfully!";
+// Execute query
+if ($conn->query($sql)) {
+    echo "Student {$message} successfully!";
 } else {
-    echo "Error: " . mysqli_error($conn);
+    echo "Error: " . $conn->error;
 }
 
-mysqli_close($conn);
+$conn->close();
