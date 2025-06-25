@@ -1,8 +1,6 @@
-alert('main.js loaded');
-
 // Save employee (add or update)
 function showMessage(msg, isSuccess = true) {
-    const messageDiv = document.getElementById('message');
+    const messageDiv = document.getElementById('message');//remember to add this div in your HTML
     messageDiv.innerHTML = `<div class='alert alert-${isSuccess ? 'success' : 'danger'}'>${msg}</div>`;
     setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
 }

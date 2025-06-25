@@ -19,6 +19,7 @@ if (mysqli_connect_errno()) {
 
 <body>
     <div class="container mt-5">
+        <!-- important to have this div for displaying messages -->
         <div id="message"></div>
         <h1>List Of Students from DB</h1>
         <div class="table-responsive">
@@ -71,7 +72,7 @@ if (mysqli_connect_errno()) {
             <button type="button" class="btn btn-primary" id="saveBtn" onclick="saveStudent()">Save Student</button>
         </form>
     </div>
-    <script src="main.js?v=<?=time()?>"></script>
+    <script src="main.js?v=<?= time() ?>"></script>
 </body>
 
 </html>
